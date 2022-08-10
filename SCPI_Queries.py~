@@ -2,8 +2,6 @@ import socket
 import time
 import pandas as pd
 import datetime as dt
-from pytz import timezone
-import pytz
 #example python script for GS communication
 #establishing connection
 s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
@@ -23,21 +21,15 @@ PF = []
 VA = []
 times = []
 
-	
-
 def SCPI_Measurements(Voltage,Current,Watts,PF,VA,times):
-	n = range(0,10)
 
-	for i in n:
-		volt = 208 - i
-		output1 = f"VOLT {volt}\n"				# Send SCPI query to measure the voltage.
-		s.send(output1.encode('utf-8'))	
+
+	while True:
 
 		output1 = 'MEASure:VOLTage?\n'				# Send SCPI query to measure the voltage.
 		s.send(output1.encode('utf-8'))				
 		msg1 = s.recv(1024)							# Set a variable to store the response in. 
 		msg1 = msg1.decode('ascii')
-		print(msg1)
 		Voltage.append(msg1.replace('\n\x00',''))	# Remove extra information in the response (hex value, new line, etc)
 		
 		output2 = 'MEASure:POW?\n'					# Send SCPI query to measure power in watts.
@@ -67,16 +59,12 @@ def SCPI_Measurements(Voltage,Current,Watts,PF,VA,times):
 		msg2 = msg1.decode('ascii')
 		Current.append(msg2.replace('\n\x00',''))
 		time.sleep(5)
-		'''
 		ti = time.time()
+        print("this is the first ti() time.time()\n\n\n\n\n",ti)
 		ti = dt.datetime.utcfromtimestamp(ti).strftime('%Y-%m-%d %H:%M:%S')
-		'''
-		formatt = '%Y-%m-%d %H:%M:%S'
-		ti = dt.datetime.now(tz=pytz.utc)
-		ti =  ti.replace(microsecond=round(ti.microsecond, -9))
-		ti = ti.astimezone(timezone('US/Pacific'))
 		print(ti)
-		times.append(ti)
+		times.append("\n\n\n\n",ti)
+		
 		output5 = 'SYST:LOC\n'						# Unlock Gs screen
 		s.send(output5.encode('utf-8'))
 
@@ -86,7 +74,7 @@ def SCPI_Measurements(Voltage,Current,Watts,PF,VA,times):
 		d = {'times':times,'Voltage':Voltage,'Watts':Watts,'PF':PF,'VA':VA,'Amps':Current}
 		df = pd.DataFrame(d)
 		df.to_csv('C:/Users/pwrlab/Desktop/emcb_is/Gs_Measuremetns2.csv',index = False)
-		time.sleep(60)
+		
 	s.close()
 SCPI_Measurements(Voltage,Current,Watts,PF,VA,times)
 # print("Voltage" + SCPI_Measurements())
