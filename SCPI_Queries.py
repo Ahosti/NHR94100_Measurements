@@ -29,7 +29,7 @@ def SCPI_Measurements(Voltage,Current,Watts,PF,VA,times):
 	n = range(0,10)
 
 	for i in n:
-		volt = 208 - i
+		volt = 240 - i
 		output1 = f"VOLT {volt}\n"				# Send SCPI query to measure the voltage.
 		s.send(output1.encode('utf-8'))	
 
