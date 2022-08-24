@@ -26,7 +26,7 @@ times = []
 	
 
 def SCPI_Measurements(Voltage,Current,Watts,PF,VA,times):
-	n = range(0,10)
+	n = range(0,15)
 
 	for i in n:
 		volt = 240 - i
@@ -86,7 +86,7 @@ def SCPI_Measurements(Voltage,Current,Watts,PF,VA,times):
 		d = {'times':times,'Voltage':Voltage,'Watts':Watts,'PF':PF,'VA':VA,'Amps':Current}
 		df = pd.DataFrame(d)
 		df.to_csv('C:/Users/pwrlab/Desktop/emcb_is/Gs_Measuremetns2.csv',index = False)
-		time.sleep(60)
+		time.sleep(30)
 	s.close()
 SCPI_Measurements(Voltage,Current,Watts,PF,VA,times)
 # print("Voltage" + SCPI_Measurements())
