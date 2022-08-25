@@ -26,7 +26,7 @@ times = []
 	
 
 def SCPI_Measurements(Voltage,Current,Watts,PF,VA,times):
-	n = range(0,24,12)
+	n = range(0,25,12)
 
 	for i in n:
 		volt = 240 - i
